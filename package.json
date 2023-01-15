@@ -1,0 +1,16 @@
+{
+  "name": "introduction",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn tsc --strict",
+    "start": "node build/index.js --strict"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "^4.2.0",
+    "fs": "^0.0.1-security",
+    "typescript": "^4.9.4"
+  }
+}
