@@ -1,10 +1,10 @@
-import { DataTypes } from "./constans/index.js";
+import { Paths } from "./constans/index.js";
 import { DataFactory } from "./dataFactory.js";
 import { Predict } from "./predict.js";
 
 const dataFactory = new DataFactory()
-const data = dataFactory.createData(DataTypes.trainingData)
-const testData = dataFactory.createData(DataTypes.testData)
+const data = dataFactory.createData(Paths.dataPath)
+const testData = dataFactory.createData(Paths.testDataPath)
 
 const prediction = new Predict({ data, testData })
 

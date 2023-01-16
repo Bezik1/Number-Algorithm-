@@ -13,38 +13,38 @@ export class Predict {
         this.model = this.createModel()
     }
 
-    testModel(): Scalar {
+    private createModel(): Sequential {
+        const model = sequential()
+        model.add(layers.dense({units: 4, inputShape: [4], activation: 'relu', dtype: 'int32'}))
+        model.add(layers.dense({units: 1, activation: 'linear', dtype: 'int32'}))
+
+        return model
+    }
+
+    private dataTransformation(data: DataType): TensorParameters {
+        return {
+            xs: tensor2d(data.data),
+            ys: tensor1d(data.labels)
+        }
+    }
+
+    public testModel(): Scalar {
         const { xs, ys } = this.dataTransformation(this.testData)
 
         return this.model.evaluate(xs, ys) as Scalar
     }
 
-    predictNumber(): number {
+    public predictNumber(): number {
         const input = tensor2d([[3, 4, 5, 6]])
         const prediction = this.model.predict(input) as Tensor<Rank>
 
         return Math.floor(Number(prediction.dataSync()[0]))
     }
 
-    async modelTraining() {
+    public async modelTraining() {
         const { xs, ys } = this.dataTransformation(this.data)
         
         this.model.compile({optimizer: 'sgd', loss: 'meanSquaredError'})
         return await this.model.fit(xs, ys, {epochs: 100})
-    }
-
-    createModel(): Sequential {
-        const model = sequential()
-        model.add(layers.dense({units: 4, inputShape: [4], activation: 'relu'}))
-        model.add(layers.dense({units: 1, activation: 'linear'}))
-
-        return model
-    }
-
-    dataTransformation(data: DataType): TensorParameters {
-        return {
-            xs: tensor2d(data.data),
-            ys: tensor1d(data.labels)
-        }
     }
 }
